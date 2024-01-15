@@ -26,13 +26,25 @@ class ContratoClienteResource extends Resource
 
     protected static ?string $navigationGroup = 'Principal';
     protected static ?string $slug = 'contratos-con-clientes';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
-            ]);
+                TextInput::make('contrato')
+                ->maxLength(200)
+                ->required()
+                ->columnSpanFull(),
+                TextInput::make('importe')
+                ->numeric()
+                ->required(),
+                DatePicker::make('fecha_inicio'),
+                DatePicker::make('fecha_fin'),
+                TextInput::make('observaciones')
+                ->maxLength(4000)
+                ->columnSpanFull(),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table

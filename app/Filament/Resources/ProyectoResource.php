@@ -20,6 +20,7 @@ class ProyectoResource extends Resource
     protected static ?string $model = Proyecto::class;
     protected static ?string $navigationGroup = 'Principal';
     protected static ?string $slug = 'proyectos';
+    protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
@@ -27,7 +28,57 @@ class ProyectoResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\Select::make('codigo_contrato')
+                    ->relationship('contratoCliente','contrato')
+                    ->searchable()
+                    ->preload(),                
+                Forms\Components\TextInput::make('codigopr')
+                    ->required()
+                    ->maxLength(7),
+                Forms\Components\TextInput::make('proyecto')
+                    ->required()
+                    ->maxLength(200),
+                Forms\Components\TextInput::make('importe')
+                    ->numeric(),
+                Forms\Components\Section::make('Fechas')
+                    ->description('Hitos del proyecto')
+                    ->schema([                    
+                        Forms\Components\DatePicker::make('fecha_inicio')
+                            ->required(),
+                        Forms\Components\DatePicker::make('fecha_fin'),
+                // Forms\Components\TextInput::make('COSTE_PERSONAL')
+                //     ->numeric(),
+                // Forms\Components\TextInput::make('COSTE_DIRECTO')
+                //     ->numeric(),
+                // Forms\Components\TextInput::make('COSTE_INVESTIGADOR')
+                //     ->numeric(),
+                        Forms\Components\DatePicker::make('fecha_entrega'),
+                // Forms\Components\DatePicker::make('CERRADO'),
+                ])->columns(3),
+                Forms\Components\Section::make('Características')
+                    ->description('Caracteriza el proyecto')
+                    ->schema([
+                        Forms\Components\Select::make('subvencionada')
+                        ->options([
+                            'S' => 'Sí',
+                            'N' => 'No',
+                        ]),
+                    Forms\Components\Select::make('repartible')
+                        ->options([
+                            'S' => 'Sí',
+                            'N' => 'No',
+                        ]),
+                    Forms\Components\TextInput::make('tipologia')
+                        ->required()
+                        ->numeric()
+                        ->columnSpan(3),
+                    Forms\Components\TextInput::make('concurrencia')
+                        ->numeric()
+                        ->columnSpan(3),
+                    Forms\Components\TextInput::make('recurrencia')
+                        ->numeric()
+                        ->columnSpan(3),
+                    ])->columns(11),
             ]);
     }
 
