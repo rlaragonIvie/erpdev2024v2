@@ -26,5 +26,20 @@ class Proyecto extends Model
     public function contratoCliente(): BelongsTo
     {
         return $this->belongsTo(ContratoCliente::class);
-    }    
+    }   
+    
+    public function concurrencia(): BelongsTo
+    {
+        return $this->belongsTo(Concurrencia::class);
+    }      
+
+    public function recurrencia(): BelongsTo
+    {
+        return $this->belongsTo(Recurrencia::class);
+    }          
+    
+    public function tipologia(): BelongsTo
+    {
+        return $this->belongsTo(Tipologia::class);
+    }          
 }

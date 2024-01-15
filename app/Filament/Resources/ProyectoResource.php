@@ -68,15 +68,15 @@ class ProyectoResource extends Resource
                             'S' => 'Sí',
                             'N' => 'No',
                         ]),
-                    Forms\Components\TextInput::make('tipologia')
+                    Forms\Components\Select::make('tipologia')
+                        ->relationship('tipologia','descripcion')
                         ->required()
-                        ->numeric()
                         ->columnSpan(3),
-                    Forms\Components\TextInput::make('concurrencia')
-                        ->numeric()
+                    Forms\Components\Select::make('concurrencia')
+                        ->relationship('concurrencia','concurrencia_txt')
                         ->columnSpan(3),
-                    Forms\Components\TextInput::make('recurrencia')
-                        ->numeric()
+                    Forms\Components\Select::make('recurrencia')
+                        ->relationship('recurrencia','recurrencia_txt')
                         ->columnSpan(3),
                     ])->columns(11),
             ]);
@@ -176,6 +176,7 @@ class ProyectoResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
