@@ -55,7 +55,7 @@ class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->brandLogo(asset('images/ivie.jpg'))
+            ->brandLogo(asset('images/Ivie.jpg'))
             ->brandLogoHeight('3rem');
     }
 }
