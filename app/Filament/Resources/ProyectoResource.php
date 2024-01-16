@@ -44,15 +44,18 @@ class ProyectoResource extends Resource
                     ->description('Hitos del proyecto')
                     ->schema([                    
                         Forms\Components\DatePicker::make('fecha_inicio')
-                            ->required(),
-                        Forms\Components\DatePicker::make('fecha_fin'),
+                            ->required()
+                            ->native(true),
+                        Forms\Components\DatePicker::make('fecha_fin')
+                        ->native(true),
                 // Forms\Components\TextInput::make('COSTE_PERSONAL')
                 //     ->numeric(),
                 // Forms\Components\TextInput::make('COSTE_DIRECTO')
                 //     ->numeric(),
                 // Forms\Components\TextInput::make('COSTE_INVESTIGADOR')
                 //     ->numeric(),
-                        Forms\Components\DatePicker::make('fecha_entrega'),
+                        Forms\Components\DatePicker::make('fecha_entrega')
+                        ->native(false),
                 // Forms\Components\DatePicker::make('CERRADO'),
                 ])->columns(3),
                 Forms\Components\Section::make('Características')
