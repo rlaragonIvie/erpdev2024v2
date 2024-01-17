@@ -3,15 +3,29 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProyectoResource\Pages;
+use App\Filament\Resources\ProyectoResource\Pages\CreateProyecto;
+use App\Filament\Resources\ProyectoResource\Pages\EditProyecto;
+use App\Filament\Resources\ProyectoResource\Pages\ListProyectos;
 use App\Filament\Resources\ProyectoResource\RelationManagers;
 use App\Models\Proyecto;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Table;
-use Filament\Tables\Filters\Filter;
+use Filament\Tables\Actions\BulkActionGroup;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Enums\FiltersLayout;
+use Filament\Tables\Filters\Filter;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
@@ -186,6 +200,49 @@ class ProyectoResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make('Definición del proyecto')
+                ->schema([
+                    TextEntry::make('contratoClienteRS.contrato')
+                    ->label('Contrato'),                
+                    TextEntry::make('codigopr')
+                    ->label('Código Proyecto'),
+                    TextEntry::make('proyecto')
+                    ->label('Proyecto'),
+                    TextEntry::make('importe')
+                    ->label('Importe'),
+                ])->columns(3),
+               Section::make('Hitos')
+                    ->schema([                
+                        TextEntry::make('fecha_inicio')
+                        ->date()
+                        ->label('Inicio'),                    
+                        TextEntry::make('fecha_fin')
+                        ->date()
+                        ->label('Fin'),
+                        TextEntry::make('fecha_entrega')
+                        ->date()
+                        ->label('Entrega')                    
+                    ])->columns(3),
+                Section::make('Estado y características')
+                    ->schema([
+                        TextEntry::make('subvencionada')
+                            ->label('Subvencionada'),
+                        TextEntry::make('repartible')
+                            ->label('Repartible'),
+                        TextEntry::make('tipologia')
+                            ->label('Tipología'),
+                        TextEntry::make('concurrencia.concurrencia_txt')
+                            ->label('Concurrencia'),
+                        TextEntry::make('recurrencia','recurrencia_txt')
+                            ->label('Recurrencia')                    
+                    ])->columns(3)
             ]);
     }
 

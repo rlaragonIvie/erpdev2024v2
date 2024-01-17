@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ContratoClienteResource\Pages;
 use App\Filament\Resources\ContratoClienteResource\RelationManagers;
+use App\Filament\Resources\Section;
 use App\Models\ContratoCliente;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,6 +16,8 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\DatePicker;
+use Filament\Infolists\Infolist;
+use Filament\Infolists\Components\TextEntry;
 
 class ContratoClienteResource extends Resource
 {
@@ -72,6 +75,23 @@ class ContratoClienteResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Section::make('Contrato con cliente')
+                ->schema([
+                    TextEntry::make('contrato')
+                    ->columnSpanFull(),
+                    TextEntry::make('importe'),
+                    TextEntry::make('fecha_inicio')->format('dd/mm/YYYY'),
+                    TextEntry::make('fecha_fin'),
+                    TextEntry::make('observaciones')
+                    ->columnSpanFull(),
+                ])->columns(3)
             ]);
     }
 

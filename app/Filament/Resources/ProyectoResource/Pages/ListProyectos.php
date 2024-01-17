@@ -3,8 +3,12 @@
 namespace App\Filament\Resources\ProyectoResource\Pages;
 
 use App\Filament\Resources\ProyectoResource;
+use Carbon\Carbon;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\ListRecords\Tab;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class ListProyectos extends ListRecords
 {
@@ -16,4 +20,17 @@ class ListProyectos extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    public function getTabs(): array
+    {
+        return [
+            'all' => Tab::make(),
+            'active projects' => Tab::make()
+            ->modifyQueryUsing(fn (Builder $query) => $query->whereNull('cerrado')
+            ->where('codigopr','like','P%')),
+            'closed projects' => Tab::make()
+            ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('cerrado')
+            ->where('codigopr','like','P%')),
+        ];
+    }    
 }
