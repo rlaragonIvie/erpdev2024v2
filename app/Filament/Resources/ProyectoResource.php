@@ -19,6 +19,7 @@ use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Filament\Support\RawJs;
 use Filament\Tables;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -34,7 +35,7 @@ class ProyectoResource extends Resource
     protected static ?string $model = Proyecto::class;
     protected static ?string $navigationGroup = 'Principal';
     protected static ?string $slug = 'proyectos';
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 1;
 
     protected static ?string $navigationIcon = 'heroicon-o-briefcase';
 
@@ -42,35 +43,34 @@ class ProyectoResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('codigo_contrato')
-                    ->relationship('contratoCliente','contrato')
-                    ->searchable()
-                    ->preload(),                
                 Forms\Components\TextInput::make('codigopr')
                     ->required()
                     ->maxLength(7),
                 Forms\Components\TextInput::make('proyecto')
                     ->required()
-                    ->maxLength(200),
+                    ->maxLength(200),                
+                Forms\Components\Select::make('codigo_contrato')
+                    ->relationship('contratoCliente','contrato')
+                    ->searchable()
+                    ->preload()
+                    ->label('Contrato Cliente'),     
                 Forms\Components\TextInput::make('importe')
-                    ->numeric(),
+                    ->mask(RawJs::make('$money($input,'.',',',2)')),
+                    //->stripCharacters('.')
+                    //->numeric(),
                 Forms\Components\Section::make('Fechas')
                     ->description('Hitos del proyecto')
-                    ->schema([                    
+                    ->schema([    
+                        Forms\Components\DatePicker::make('fecha_alta')
+                        ->native(true),
+                        Forms\Components\DatePicker::make('fecha_baja')
+                        ->native(true),                
                         Forms\Components\DatePicker::make('fecha_inicio')
-                            ->required()
-                            ->native(true),
+                        ->native(true),
                         Forms\Components\DatePicker::make('fecha_fin')
                         ->native(true),
-                // Forms\Components\TextInput::make('COSTE_PERSONAL')
-                //     ->numeric(),
-                // Forms\Components\TextInput::make('COSTE_DIRECTO')
-                //     ->numeric(),
-                // Forms\Components\TextInput::make('COSTE_INVESTIGADOR')
-                //     ->numeric(),
                         Forms\Components\DatePicker::make('fecha_entrega')
                         ->native(false),
-                // Forms\Components\DatePicker::make('CERRADO'),
                 ])->columns(3),
                 Forms\Components\Section::make('Características')
                     ->description('Caracteriza el proyecto')
@@ -103,40 +103,53 @@ class ProyectoResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('contratoCliente.contrato')
-                ->sortable()
-                ->toggleable(isToggledHiddenByDefault:true)
-                ->label('Contrato'),                
-                Tables\Columns\TextColumn::make('codigopr')
+                TextColumn::make('codigopr')
                 ->searchable()
-                ->label('Código Proyecto'),
-                Tables\Columns\TextColumn::make('proyecto')
+                ->label('Código Proyecto'),     
+                TextColumn::make('proyecto')
                 ->searchable()
                 ->label('Proyecto')
-                ->grow(false),
-                Tables\Columns\TextColumn::make('importe')
+                ->wrap()
+                ->grow(false),                           
+                TextColumn::make('contratoCliente.contrato')
+                ->sortable()
+                ->toggleable(isToggledHiddenByDefault:true)
+                ->label('Contrato Cliente'),   
+                TextColumn::make('importe')
                 ->numeric(
                     decimalPlaces: 2,
                     decimalSeparator: ',',
                     thousandsSeparator: '.',                    
                 )
                 ->label('Importe'),
-                Tables\Columns\TextColumn::make('fecha_inicio')
+                TextColumn::make('fecha_alta')
                 ->date()
                 ->sortable()
-                ->label('Inicio'),                    
-                Tables\Columns\TextColumn::make('fecha_fin')
+                ->label('Alta')
+                ->toggleable(isToggledHiddenByDefault:false),
+                TextColumn::make('fecha_baja')
                 ->date()
                 ->sortable()
-                ->label('Fin'),
-                Tables\Columns\TextColumn::make('fecha_entrega')
+                ->label('Baja')
+                ->toggleable(isToggledHiddenByDefault:false),
+                TextColumn::make('fecha_inicio')
+                ->date()
+                ->sortable()
+                ->label('Inicio')
+                ->toggleable(isToggledHiddenByDefault:true),                       
+                TextColumn::make('fecha_fin')
+                ->date()
+                ->sortable()
+                ->label('Fin')
+                ->toggleable(isToggledHiddenByDefault:true),
+                TextColumn::make('fecha_entrega')
                 ->date()
                 ->label('Entrega')
                 ->toggleable(isToggledHiddenByDefault:true),   
-                Tables\Columns\TextColumn::make('cerrado')
+                TextColumn::make('cerrado')
                 ->date()
                 ->toggleable(isToggledHiddenByDefault:true),                   
-                Tables\Columns\TextColumn::make('coste_personal')
+                TextColumn::make('coste_personal')
                 ->numeric(
                     decimalPlaces: 2,
                     decimalSeparator: ',',
@@ -145,7 +158,7 @@ class ProyectoResource extends Resource
                 ->sortable()
                 ->toggleable(isToggledHiddenByDefault:true)
                 ->label('Coste de personal'),
-                Tables\Columns\TextColumn::make('coste_directo')
+                TextColumn::make('coste_directo')
                 ->numeric(
                     decimalPlaces: 2,
                     decimalSeparator: ',',
@@ -154,7 +167,7 @@ class ProyectoResource extends Resource
                 ->sortable()
                 ->toggleable(isToggledHiddenByDefault:true)
                 ->label('Coste Directo'),
-                Tables\Columns\TextColumn::make('coste_investigador')
+                TextColumn::make('coste_investigador')
                 ->numeric(
                     decimalPlaces: 2,
                     decimalSeparator: ',',
@@ -163,27 +176,24 @@ class ProyectoResource extends Resource
                 ->sortable()
                 ->toggleable(isToggledHiddenByDefault:true)
                 ->label('Coste Investigadores'),
-                Tables\Columns\TextColumn::make('subvencionada')
+                TextColumn::make('subvencionada')
                     ->searchable()
                     ->label('Sub.')
                     ->toggleable(isToggledHiddenByDefault:true),
-                Tables\Columns\TextColumn::make('repartible')
+                TextColumn::make('repartible')
                     ->searchable()
                     ->label('Rep.')
                     ->toggleable(isToggledHiddenByDefault:true),
-                Tables\Columns\TextColumn::make('tipologia')
-                    ->numeric()
+                TextColumn::make('tipologia.descripcion')
                     ->sortable()
                     ->searchable()
                     ->label('Tipo')
                     ->toggleable(isToggledHiddenByDefault:true),
-                Tables\Columns\TextColumn::make('concurrencia')
-                    ->numeric()
+                TextColumn::make('concurrencia.concurrencia_txt')
                     ->sortable()
                     ->label('Conc.')
                     ->toggleable(isToggledHiddenByDefault:true),
-                Tables\Columns\TextColumn::make('recurrencia')
-                    ->numeric()
+                TextColumn::make('recurrencia.recurrencia_txt')
                     ->sortable()
                     ->label('Recu.')
                     ->toggleable(isToggledHiddenByDefault:true),
@@ -210,16 +220,27 @@ class ProyectoResource extends Resource
                 Section::make('Definición del proyecto')
                 ->schema([
                     TextEntry::make('contratoClienteRS.contrato')
-                    ->label('Contrato'),                
+                    ->label('Contrato Cliente'),                
                     TextEntry::make('codigopr')
                     ->label('Código Proyecto'),
                     TextEntry::make('proyecto')
                     ->label('Proyecto'),
                     TextEntry::make('importe')
-                    ->label('Importe'),
+                    ->label('Importe')
+                    ->numeric(
+                        decimalPlaces: 2,
+                        decimalSeparator: ',',
+                        thousandsSeparator: '.',
+                    ),                    
                 ])->columns(3),
                Section::make('Hitos')
                     ->schema([                
+                        TextEntry::make('fecha_alta')
+                        ->date()
+                        ->label('Alta'),
+                        TextEntry::make('fecha_baja')
+                        ->date()
+                        ->label('Baja'),                                                    
                         TextEntry::make('fecha_inicio')
                         ->date()
                         ->label('Inicio'),                    
@@ -238,9 +259,9 @@ class ProyectoResource extends Resource
                             ->label('Repartible'),
                         TextEntry::make('tipologia')
                             ->label('Tipología'),
-                        TextEntry::make('concurrencia.concurrencia_txt')
+                        TextEntry::make('concurrencia.descripcion')
                             ->label('Concurrencia'),
-                        TextEntry::make('recurrencia','recurrencia_txt')
+                        TextEntry::make('recurrencia')
                             ->label('Recurrencia')                    
                     ])->columns(3)
             ]);

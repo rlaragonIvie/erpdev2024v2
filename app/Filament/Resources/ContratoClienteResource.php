@@ -4,20 +4,21 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ContratoClienteResource\Pages;
 use App\Filament\Resources\ContratoClienteResource\RelationManagers;
-use App\Filament\Resources\Section;
+use App\Filament\Resources\ContratoClienteResource\RelationManagers\ProyectoRelationManager;
 use App\Models\ContratoCliente;
 use Filament\Forms;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\Section;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\TextInput;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Forms\Components\DatePicker;
-use Filament\Infolists\Infolist;
-use Filament\Infolists\Components\TextEntry;
 
 class ContratoClienteResource extends Resource
 {
@@ -29,7 +30,7 @@ class ContratoClienteResource extends Resource
 
     protected static ?string $navigationGroup = 'Principal';
     protected static ?string $slug = 'contratos-con-clientes';
-    protected static ?int $navigationSort = 1;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {
@@ -87,8 +88,12 @@ class ContratoClienteResource extends Resource
                     TextEntry::make('contrato')
                     ->columnSpanFull(),
                     TextEntry::make('importe'),
-                    TextEntry::make('fecha_inicio')->format('dd/mm/YYYY'),
-                    TextEntry::make('fecha_fin'),
+                    TextEntry::make('fecha_inicio')
+                        ->date()
+                        ->label('Alta'),
+                    TextEntry::make('fecha_fin')
+                        ->date()
+                        ->label('Alta'),
                     TextEntry::make('observaciones')
                     ->columnSpanFull(),
                 ])->columns(3)
@@ -98,7 +103,7 @@ class ContratoClienteResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ProyectoRelationManager::class,
         ];
     }
 

@@ -26,10 +26,10 @@ class ListProyectos extends ListRecords
         return [
             'all' => Tab::make(),
             'active projects' => Tab::make()
-            ->modifyQueryUsing(fn (Builder $query) => $query->whereNull('cerrado')
+            ->modifyQueryUsing(fn (Builder $query) => $query->whereNull('fecha_baja')
             ->where('codigopr','like','P%')),
             'closed projects' => Tab::make()
-            ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('cerrado')
+            ->modifyQueryUsing(fn (Builder $query) => $query->whereNotNull('fecha_baja')
             ->where('codigopr','like','P%')),
         ];
     }    

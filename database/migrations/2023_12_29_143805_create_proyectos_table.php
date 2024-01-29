@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('proyectos', function (Blueprint $table) {
             $table->string('codigopr', 7);
             $table->string('proyecto',200);
-            $table->date('fecha_fin')->nullable(); ;
+            $table->date('fecha_alta')->nullable();
+            $table->date('fecha_baja')->nullable();
+            $table->date('fecha_fin')->nullable();
             $table->double('importe', 11, 2)->nullable();    
-            $table->date('fecha_inicio');
+            $table->date('fecha_inicio')->nullable();
             $table->double('coste_personal', 11, 2)->nullable();    
             $table->double('coste_directo', 11, 2)->nullable();    
             $table->double('coste_investigador', 11, 2)->nullable();    

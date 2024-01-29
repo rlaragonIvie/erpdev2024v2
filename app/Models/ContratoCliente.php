@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Models\Proyecto;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ContratoCliente extends Model
 {
@@ -23,6 +25,6 @@ class ContratoCliente extends Model
 
     public function proyecto() : HasMany
     {
-        return $this->hasMany(Proyecto::class);
+        return $this->hasMany(Proyecto::class, 'codigo_contrato');
     }
 }

@@ -14,6 +14,6 @@ class Recurrencia extends Model
 
     public function proyecto() : HasMany
     {
-        return $this->hasMany(Proyecto::class);
+        return $this->hasMany(Proyecto::class, 'recurrencia');
     }
 }
