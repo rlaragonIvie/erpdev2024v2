@@ -14,6 +14,6 @@ class Tipologia extends Model
 
     public function proyecto() : HasMany
     {
-        return $this->hasMany(Proyecto::class, 'tipologia', 'cod_tipologia');
+        return $this->hasMany(Proyecto::class, 'cod_tipologia', 'tipologia');
     }
 }

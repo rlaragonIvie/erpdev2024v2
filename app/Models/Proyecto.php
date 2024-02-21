@@ -34,18 +34,18 @@ class Proyecto extends Model
         return $this->belongsTo(ContratoCliente::class, 'codigo_contrato');
     }   
     
-    public function concurrencia(): BelongsTo
+    public function concurrencia_(): BelongsTo
     {
-        return $this->belongsTo(Concurrencia::class);
+        return $this->belongsTo(Concurrencia::class, 'concurrencia', 'concurrencia');
     }      
 
-    public function recurrencia(): BelongsTo
+    public function recurrencia_(): BelongsTo
     {
-        return $this->belongsTo(Recurrencia::class);
+        return $this->belongsTo(Recurrencia::class, 'recurrencia', 'recurrencia');
     }          
     
-    public function tipologia(): BelongsTo
+    public function tipologia_(): BelongsTo
     {
-        return $this->belongsTo(Tipologia::class, 'cod_tipologia', 'tipologia');
+        return $this->belongsTo(Tipologia::class, 'tipologia', 'cod_tipologia');
     }          
 }

@@ -14,6 +14,6 @@ class Concurrencia extends Model
 
     public function proyecto() : HasMany
     {
-        return $this->hasMany(Proyecto::class, 'concurrencia');
+        return $this->hasMany(Proyecto::class, 'concurrencia', 'concurrencia');
     }
 }

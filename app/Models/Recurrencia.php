@@ -12,8 +12,8 @@ class Recurrencia extends Model
     protected $primaryKey   = 'recurrencia';
     protected $guarded = [];
 
-    public function proyecto() : HasMany
+    public function proyecto_() : HasMany
     {
-        return $this->hasMany(Proyecto::class, 'recurrencia');
+        return $this->hasMany(Proyecto::class, 'recurrencia', 'recurrencia');
     }
 }

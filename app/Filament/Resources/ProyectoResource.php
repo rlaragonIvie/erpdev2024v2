@@ -86,14 +86,14 @@ class ProyectoResource extends Resource
                             'N' => 'No',
                         ]),
                     Forms\Components\Select::make('tipologia')
-                        ->relationship('tipologia','descripcion')
+                        ->relationship('tipologia_','descripcion')
                         ->required()
                         ->columnSpan(3),
                     Forms\Components\Select::make('concurrencia')
-                        ->relationship('concurrencia','concurrencia_txt')
+                        ->relationship('concurrencia_','concurrencia_txt')
                         ->columnSpan(3),
                     Forms\Components\Select::make('recurrencia')
-                        ->relationship('recurrencia','recurrencia_txt')
+                        ->relationship('recurrencia_','recurrencia_txt')
                         ->columnSpan(3),
                     ])->columns(11),
             ]);
@@ -184,16 +184,16 @@ class ProyectoResource extends Resource
                     ->searchable()
                     ->label('Rep.')
                     ->toggleable(isToggledHiddenByDefault:true),
-                TextColumn::make('tipologia.descripcion')
+                TextColumn::make('tipologia_.descripcion')
                     ->sortable()
                     ->searchable()
                     ->label('Tipo')
                     ->toggleable(isToggledHiddenByDefault:true),
-                TextColumn::make('concurrencia.concurrencia_txt')
+                TextColumn::make('concurrencia_.concurrencia_txt')
                     ->sortable()
                     ->label('Conc.')
                     ->toggleable(isToggledHiddenByDefault:true),
-                TextColumn::make('recurrencia.recurrencia_txt')
+                TextColumn::make('recurrencia_.recurrencia_txt')
                     ->sortable()
                     ->label('Recu.')
                     ->toggleable(isToggledHiddenByDefault:true),
@@ -257,11 +257,11 @@ class ProyectoResource extends Resource
                             ->label('Subvencionada'),
                         TextEntry::make('repartible')
                             ->label('Repartible'),
-                        TextEntry::make('tipologia')
+                        TextEntry::make('tipologia_.descripcion')
                             ->label('Tipología'),
-                        TextEntry::make('concurrencia.descripcion')
+                        TextEntry::make('concurrencia_.concurrencia_txt')
                             ->label('Concurrencia'),
-                        TextEntry::make('recurrencia')
+                        TextEntry::make('recurrencia_.recurrencia_txt')
                             ->label('Recurrencia')                    
                     ])->columns(3)
             ]);

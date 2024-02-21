@@ -22,8 +22,8 @@ return new class extends Migration
             $table->double('coste_personal', 11, 2)->nullable();    
             $table->double('coste_directo', 11, 2)->nullable();    
             $table->double('coste_investigador', 11, 2)->nullable();    
-            $table->date('fecha_entrega')->nullable(); ;
-            $table->date('cerrado')->nullable(); ;
+            $table->date('fecha_entrega')->nullable(); 
+            $table->date('cerrado')->nullable(); 
             $table->string('subvencionada',1);
             $table->string('repartible',1);
             $table->integer('tipologia',2);
