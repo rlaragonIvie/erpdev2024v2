@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\AreadeConocimiento;
 use App\Models\Concurrencia;
 use App\Models\ContratoCliente;
 use App\Models\Recurrencia;
@@ -9,6 +10,7 @@ use App\Models\Tipologia;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Proyecto extends Model
 {
@@ -48,4 +50,15 @@ class Proyecto extends Model
     {
         return $this->belongsTo(Tipologia::class, 'tipologia', 'cod_tipologia');
     }          
+    
+    public function areas(): BelongsToMany
+    {
+        return $this->belongsToMany(AreadeConocimiento::class, 'proyecto_area', 'codigopr','codigo_area');
+    }
+
+    public function area_unica($codigopr): int
+    {
+        $proyecto = Proyecto::where('codigopr',$codigopr)->get()->first()->areas->first();
+        return $proyecto->codigo_area;
+    }
 }

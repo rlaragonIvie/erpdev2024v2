@@ -88,13 +88,18 @@ class ProyectoResource extends Resource
                     Forms\Components\Select::make('tipologia')
                         ->relationship('tipologia_','descripcion')
                         ->required()
-                        ->columnSpan(3),
+                        ->columnSpan(2),
                     Forms\Components\Select::make('concurrencia')
                         ->relationship('concurrencia_','concurrencia_txt')
-                        ->columnSpan(3),
+                        ->columnSpan(2),
                     Forms\Components\Select::make('recurrencia')
                         ->relationship('recurrencia_','recurrencia_txt')
-                        ->columnSpan(3),
+                        ->columnSpan(2),
+                    Forms\Components\Select::make('codigo_area')
+                        ->multiple()
+                        ->relationship('areas','area')
+                        ->preload()
+                        ->columnSpan(3),                        
                     ])->columns(11),
             ]);
     }
@@ -197,6 +202,10 @@ class ProyectoResource extends Resource
                     ->sortable()
                     ->label('Recu.')
                     ->toggleable(isToggledHiddenByDefault:true),
+                TextColumn::make('areas.area')
+                    ->sortable()
+                    ->label('Área')
+                    ->toggleable(isToggledHiddenByDefault:true),                    
             ])
             ->defaultSort('fecha_inicio','desc')
             ->filters([
@@ -262,7 +271,9 @@ class ProyectoResource extends Resource
                         TextEntry::make('concurrencia_.concurrencia_txt')
                             ->label('Concurrencia'),
                         TextEntry::make('recurrencia_.recurrencia_txt')
-                            ->label('Recurrencia')                    
+                            ->label('Recurrencia'),
+                        TextEntry::make('areas.area')
+                            ->label('Área de conocimiento')                                               
                     ])->columns(3)
             ]);
     }
